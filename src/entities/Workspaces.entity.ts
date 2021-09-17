@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -11,17 +12,15 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Channels } from './Channels';
-import { DMs } from './DMs';
-import { Mentions } from './Mentions';
-import { WorkspaceMembers } from './WorkspaceMembers';
-import { Users } from './Users';
+import { Channels } from './Channels.entity';
+import { DMs } from './DMs.entity';
+import { Mentions } from './Mentions.entity';
+import { WorkspaceMembers } from './WorkspaceMembers.entity';
+import { Users } from './Users.entity';
 
-@Index('name', ['name'], { unique: true })
-@Index('url', ['url'], { unique: true })
-@Index('OwnerId', ['OwnerId'], {})
-@Entity({ schema: 'sleact', name: 'workspaces' })
-export class Workspaces {
+@Entity()
+export class Workspaces extends BaseEntity {
+  //회사 단위를 의미한다.
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
@@ -40,7 +39,7 @@ export class Workspaces {
   @DeleteDateColumn()
   deletedAt: Date | null;
 
-  @Column('int', { name: 'OwnerId', nullable: true })
+  @Column({ name: 'OwnerId', nullable: true })
   OwnerId: number | null;
 
   @OneToMany(() => Channels, (channels) => channels.Workspace)
@@ -63,7 +62,7 @@ export class Workspaces {
     onDelete: 'SET NULL',
     onUpdate: 'CASCADE',
   })
-  @JoinColumn([{ name: 'OwnerId', referencedColumnName: 'id' }])
+  // @JoinColumn([{ name: 'OwnerId', referencedColumnName: 'id' }])
   Owner: Users;
 
   @ManyToMany(() => Users, (users) => users.Workspaces)

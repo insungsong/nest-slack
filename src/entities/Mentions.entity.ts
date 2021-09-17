@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
@@ -8,19 +9,19 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Workspaces } from './Workspaces';
-import { Users } from './Users';
+import { Workspaces } from './Workspaces.entity';
+import { Users } from './Users.entity';
 
-@Index('WorkspaceId', ['WorkspaceId'], {})
-@Index('dms_ibfk_2', ['SenderId'], {})
-@Index('dms_ibfk_3', ['ReceiverId'], {})
-@Entity({ schema: 'sleact', name: 'dms' })
-export class DMs {
+@Entity()
+export class Mentions extends BaseEntity {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
-  @Column('text', { name: 'content' })
-  content: string;
+  @Column('enum', { name: 'category', enum: ['chat', 'dm', 'system'] })
+  type: 'chat' | 'dm' | 'system';
+
+  @Column('int', { name: 'ChatId', nullable: true })
+  ChatId: number | null;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -37,21 +38,21 @@ export class DMs {
   @Column('int', { name: 'ReceiverId', nullable: true })
   ReceiverId: number | null;
 
-  @ManyToOne(() => Workspaces, (workspaces) => workspaces.DMs, {
+  @ManyToOne(() => Workspaces, (workspaces) => workspaces.Mentions, {
     onDelete: 'SET NULL',
     onUpdate: 'CASCADE',
   })
   @JoinColumn([{ name: 'WorkspaceId', referencedColumnName: 'id' }])
   Workspace: Workspaces;
 
-  @ManyToOne(() => Users, (users) => users.DMs, {
+  @ManyToOne(() => Users, (users) => users.Mentions, {
     onDelete: 'SET NULL',
     onUpdate: 'CASCADE',
   })
   @JoinColumn([{ name: 'SenderId', referencedColumnName: 'id' }])
   Sender: Users;
 
-  @ManyToOne(() => Users, (users) => users.DMs2, {
+  @ManyToOne(() => Users, (users) => users.Mentions2, {
     onDelete: 'SET NULL',
     onUpdate: 'CASCADE',
   })

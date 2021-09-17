@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
@@ -8,13 +9,11 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Users } from './Users';
-import { Channels } from './Channels';
+import { Users } from './Users.entity';
+import { Channels } from './Channels.entity';
 
-@Index('UserId', ['UserId'], {})
-@Index('ChannelId', ['ChannelId'], {})
-@Entity({ schema: 'sleact', name: 'channelchats' })
-export class ChannelChats {
+@Entity()
+export class ChannelChats extends BaseEntity {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 

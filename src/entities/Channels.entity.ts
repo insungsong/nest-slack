@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
@@ -10,25 +11,24 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { ChannelChats } from './ChannelChats';
-import { ChannelMembers } from './ChannelMembers';
-import { Users } from './Users';
-import { Workspaces } from './Workspaces';
+import { ChannelChats } from './ChannelChats.entity';
+import { ChannelMembers } from './ChannelMembers.entity';
+import { Users } from './Users.entity';
+import { Workspaces } from './Workspaces.entity';
 
-@Index('WorkspaceId', ['WorkspaceId'], {})
-@Entity({ schema: 'sleact' })
-export class Channels {
+@Entity()
+export class Channels extends BaseEntity {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
   @Column('varchar', { name: 'name', length: 30 })
   name: string;
 
-  @Column('tinyint', {
+  @Column({
     name: 'private',
     nullable: true,
     width: 1,
-    default: () => "'0'",
+    default: 0,
   })
   private: boolean | null;
 

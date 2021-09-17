@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
@@ -7,12 +8,11 @@ import {
   ManyToOne,
   UpdateDateColumn,
 } from 'typeorm';
-import { Workspaces } from './Workspaces';
-import { Users } from './Users';
+import { Workspaces } from './Workspaces.entity';
+import { Users } from './Users.entity';
 
-@Index('UserId', ['UserId'], {})
-@Entity('workspacemembers', { schema: 'sleact' })
-export class WorkspaceMembers {
+@Entity()
+export class WorkspaceMembers extends BaseEntity {
   @CreateDateColumn()
   createdAt: Date;
 
@@ -25,7 +25,7 @@ export class WorkspaceMembers {
   @Column('int', { primary: true, name: 'UserId' })
   UserId: number;
 
-  @Column('datetime', { name: 'loggedInAt', nullable: true })
+  @Column({ name: 'loggedInAt', nullable: true })
   loggedInAt: Date | null;
 
   @ManyToOne(() => Workspaces, (workspaces) => workspaces.WorkspaceMembers, {
