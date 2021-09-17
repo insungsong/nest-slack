@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  EntityRepository,
   Index,
   JoinTable,
   ManyToMany,
