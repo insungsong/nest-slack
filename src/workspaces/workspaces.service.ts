@@ -64,18 +64,25 @@ export class WorkspacesService {
       workspaceMember.UserId = myId;
       workspaceMember.WorkspaceId = returned.id;
       // await this.workspaceMembersRepository.save(workspaceMember);
-      await queryRunner.manager
-        .getRepository(WorkspaceMembers)
-        .save(workspaceMember);
+
+      // await queryRunner.manager
+      //   .getRepository(WorkspaceMembers)
+      //   .save(workspaceMember);
 
       const channel = new Channels();
       channel.name = '일반';
       channel.WorkspaceId = returned.id;
 
       // const channelReturned = await this.channelsRepository.save(channel);
-      const channelReturned = await queryRunner.manager
-        .getRepository(Channels)
-        .save(channel);
+
+      //코드 동시에 두개 실행시켜주기
+      const [_, channelReturned] = await Promise.all([
+        queryRunner.manager
+          .getRepository(WorkspaceMembers)
+          .save(workspaceMember),
+
+        queryRunner.manager.getRepository(Channels).save(channel),
+      ]);
 
       const channelMember = new ChannelMembers();
 
@@ -94,5 +101,53 @@ export class WorkspacesService {
       // you need to release query runner which is manually created:
       await queryRunner.release();
     }
+  }
+
+  //TO DO: transaction화 해야함
+  async getWorkspaceMembers(url: string) {
+    await this.usersRepostory
+      .createQueryBuilder('user')
+      .innerJoin('user.WorkspaceMembers', 'members')
+      .innerJoin('members.Workspaces', 'workspaces')
+      .where('workspaces.url = :url', { url: url })
+      .getMany();
+  }
+
+  async createWorkspaceMembers(url: string, email: string) {
+    const workspace = await this.workspaceRepository.findOne({
+      where: {
+        url: url,
+      },
+      relations: ['Channels'],
+    });
+
+    const user = await this.usersRepostory.findOne({ email: email });
+    if (!user) {
+      return null;
+    }
+
+    const workspaceMember = new WorkspaceMembers();
+    workspaceMember.WorkspaceId = workspace.id;
+    workspaceMember.UserId = user.id;
+
+    await this.workspaceMembersRepository.save(workspaceMember);
+
+    const channelMember = new ChannelMembers();
+
+    channelMember.ChannelId = workspace.Channels.find(
+      (v) => v.name === '일반',
+    ).id;
+
+    await this.channerMembersRepository.save(channelMember);
+  }
+
+  async getWorkspaceMember(url: string, id: number) {
+    return await this.usersRepostory
+      .createQueryBuilder('user')
+      .where('user.id = :id', { id: id })
+      .innerJoin('user.Workspaces', 'workspaces', 'workspaces.url = :url', {
+        url: url,
+      })
+      .getOne();
   }
 }
