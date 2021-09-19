@@ -20,7 +20,7 @@ import { DMs } from './DMs.entity';
 import { Mentions } from './Mentions.entity';
 import { WorkspaceMembers } from './WorkspaceMembers.entity';
 import { Workspaces } from './Workspaces.entity';
-
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 @Entity()
 export class Users extends BaseEntity {
   @ApiProperty({
@@ -30,6 +30,7 @@ export class Users extends BaseEntity {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
+  @IsEmail()
   @ApiProperty({
     example: 'song22861@naver.com',
     description: '사용자 아이디',
@@ -37,11 +38,15 @@ export class Users extends BaseEntity {
   @Column('varchar', { name: 'email', unique: true, length: 30 })
   email: string;
 
+  @IsString()
+  @IsNotEmpty()
+  @Column({ name: 'password', select: false })
+  password: string;
+
+  @IsString()
+  @IsNotEmpty()
   @Column('varchar', { name: 'nickname', length: 30 })
   nickname: string;
-
-  @Column('varchar', { name: 'password', length: 100, select: false })
-  password: string;
 
   @CreateDateColumn()
   createdAt: Date;

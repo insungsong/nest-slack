@@ -1,11 +1,15 @@
 import { Controller, Delete, Get, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { WorkspacesService } from './workspaces.service';
 
 @ApiTags('Workspaces')
 @Controller('api/workspaces')
 export class WorkspacesController {
+  constructor(private readonly workspacesService: WorkspacesService) {}
   @Get()
-  getMyWorkspaces() {}
+  getMyWorkspaces() {
+    return this.workspacesService.hi();
+  }
 
   @Post()
   createWorkspaces() {}

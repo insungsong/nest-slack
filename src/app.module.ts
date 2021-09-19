@@ -4,20 +4,15 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { LoggerMiddleware } from 'logger.middleware';
 import { UsersModule } from './users/users.module';
-import { ChannelsModule } from './channels/channels.module';
-import { DmsModule } from './dms/dms.module';
 import { WorkspacesService } from './workspaces/workspaces.service';
-import { WorkspacesModule } from './workspaces/workspaces.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import { Users } from './entities/Users.entity';
-import { ChannelChats } from './entities/ChannelChats.entity';
+import { AuthService } from './auth/auth.service';
+import { AuthController } from './auth/auth.controller';
+import { AuthModule } from './auth/auth.module';
 import { Workspaces } from './entities/Workspaces.entity';
-import { WorkspaceMembers } from './entities/WorkspaceMembers.entity';
-import { Mentions } from './entities/Mentions.entity';
-import { DMs } from './entities/DMs.entity';
-import { Channels } from './entities/Channels.entity';
-import { ChannelMembers } from './entities/ChannelMembers.entity';
+import { WorkspacesModule } from './workspaces/workspaces.module';
 
 //새로운 수정
 @Module({
@@ -30,24 +25,16 @@ import { ChannelMembers } from './entities/ChannelMembers.entity';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      // entities: ['dist/**/*.entity{.ts,.js}'],
-      entities: [
-        ChannelChats,
-        ChannelMembers,
-        Channels,
-        DMs,
-        Mentions,
-        Users,
-        WorkspaceMembers,
-        Workspaces,
-      ],
+      entities: ['dist/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
     UsersModule,
+    AuthModule,
+    WorkspacesModule,
     TypeOrmModule.forFeature([Users]),
   ],
-  controllers: [AppController],
-  providers: [AppService, WorkspacesService], //nest는 java와 같이 의존성 주입을 해준다 이 의존성 주입을 해주는 부분이 providers부분이다.
+  controllers: [],
+  providers: [], //nest는 java와 같이 의존성 주입을 해준다 이 의존성 주입을 해주는 부분이 providers부분이다.
   exports: [], //이 모듈에 새로 만들었는데 다른 모듈에서 쓰고 싶으면 exports안에다가 넣는다.
 })
 export class AppModule implements NestModule {

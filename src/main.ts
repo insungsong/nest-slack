@@ -2,12 +2,17 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import cookieParser from 'cookie-parser';
+import { HttpExceptionsFilter } from './httpException.filter';
+import { ValidationPipe } from '@nestjs/common';
+import passport from 'passport';
 
 declare const module: any;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const port = process.env.PORT || 3000;
+  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalFilters(new HttpExceptionsFilter());
 
   console.log(`:) Listening on port ${port}`);
   if (module.hot) {
@@ -23,13 +28,9 @@ async function bootstrap() {
     .build();
 
   app.use(cookieParser());
-  // app.use(
-  //   session({
-  //     resave: false,
-  //     saveUnitialized: false,
-  //     secret: process.env.COOKIE_SCREET,
-  //   }),
-  // );
+
+  app.use(passport.initialize());
+  app.use(passport.session());
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
