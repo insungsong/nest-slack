@@ -5,17 +5,34 @@ import cookieParser from 'cookie-parser';
 import { HttpExceptionsFilter } from './httpException.filter';
 import { ValidationPipe } from '@nestjs/common';
 import passport from 'passport';
+import path from 'path/posix';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 declare const module: any;
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const port = process.env.PORT || 3000;
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
     }),
   );
+
+  if (process.env.NODE_ENV === 'production') {
+    app.enableCors({
+      origin: ['http://sleact.nodebird.com'],
+      credentials: true,
+    });
+  } else {
+    app.enableCors({
+      origin: true,
+      credentials: true,
+    });
+  }
+  app.useStaticAssets(path.join(__dirname, '..', 'uploads'), {
+    prefix: '/uploads',
+  });
   app.useGlobalFilters(new HttpExceptionsFilter());
 
   console.log(`:) Listening on port ${port}`);

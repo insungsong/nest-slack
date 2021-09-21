@@ -13,6 +13,8 @@ import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
 import { Workspaces } from './entities/Workspaces.entity';
 import { WorkspacesModule } from './workspaces/workspaces.module';
+import { EventModule } from './event/event.module';
+import { EventGateway } from './event/event.gateway';
 
 //새로운 수정
 @Module({
@@ -32,6 +34,7 @@ import { WorkspacesModule } from './workspaces/workspaces.module';
     AuthModule,
     WorkspacesModule,
     TypeOrmModule.forFeature([Users]),
+    EventModule,
   ],
   controllers: [],
   providers: [], //nest는 java와 같이 의존성 주입을 해준다 이 의존성 주입을 해주는 부분이 providers부분이다.
