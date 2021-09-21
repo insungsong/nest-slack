@@ -8,8 +8,8 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { User } from 'src/common/decorators/user.decorator';
-import { Users } from 'src/entities/Users.entity';
+import { User } from '../../src/common/decorators/user.decorator';
+import { Users } from '../../src/entities/Users.entity';
 import { CreateWorkSpaceDto } from './dto/create-workspace.dto';
 import { WorkspacesService } from './workspaces.service';
 

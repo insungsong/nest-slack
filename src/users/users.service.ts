@@ -3,15 +3,16 @@ import {
   HttpException,
   Injectable,
   Logger,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Users } from 'src/entities/Users.entity';
+import { Users } from '../../src/entities/Users.entity';
 import { Connection, getConnection, Repository } from 'typeorm';
 import bcrypt from 'bcrypt';
 import { JoinRequestDto } from './dto/join.reqeust.dto';
-import { WorkspaceMembers } from 'src/entities/WorkspaceMembers.entity';
-import { ChannelMembers } from 'src/entities/ChannelMembers.entity';
+import { WorkspaceMembers } from '../../src/entities/WorkspaceMembers.entity';
+import { ChannelMembers } from '../../src/entities/ChannelMembers.entity';
 
 @Injectable()
 export class UsersService {
@@ -31,6 +32,25 @@ export class UsersService {
     try {
     } catch (e) {
       console.log('authorUser Error: ', e);
+    }
+  }
+
+  async findByEmail(email: string) {
+    try {
+      const result = await this.usersRepository.findOne({
+        where: {
+          email: email,
+        },
+        select: ['id', 'email', 'password'],
+      });
+
+      if (!result) {
+        throw new NotFoundException('유저를 찾을 수 없습니다.');
+      }
+
+      return result;
+    } catch (e) {
+      this.logger.error('유저를 찾을 수 없습니다.');
     }
   }
 

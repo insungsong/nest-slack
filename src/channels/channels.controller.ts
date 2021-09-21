@@ -10,11 +10,9 @@ import {
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
-import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
-import { query } from 'express';
-import { User } from 'src/common/decorators/user.decorator';
-import { Users } from 'src/entities/Users.entity';
+import { User } from '../../src/common/decorators/user.decorator';
 import { ChannelsService } from './channels.service';
 import { PostChatDto } from './dto/postchat.dto';
 import fs from 'fs';
@@ -25,7 +23,7 @@ try {
   fs.readdirSync('uploads');
 } catch (e) {
   console.log('uploads 폴더가 없어 uploads폴더를 생성합니다.');
-  fs.mkdirSync('updloads');
+  fs.mkdirSync('uploads');
 }
 @ApiTags('Channels')
 @Controller('api/workspaces/:url/channels')

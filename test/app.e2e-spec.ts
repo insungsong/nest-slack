@@ -2,6 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
+import passport from 'passport';
+import session from 'express-session';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -12,6 +14,14 @@ describe('AppController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    app.use(
+      session({
+        resave: false,
+        saveUninitialized: false,
+      }),
+    );
+    app.use(passport.initialize());
+    app.use(passport.session());
     await app.init();
   });
 

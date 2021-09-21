@@ -1,6 +1,6 @@
 import { ApiProperty, PickType } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
-import { Workspaces } from 'src/entities/Workspaces.entity';
+import { Workspaces } from '../../../src/entities/Workspaces.entity';
 
 export class CreateWorkSpaceDto extends PickType(Workspaces, []) {
   @IsString()

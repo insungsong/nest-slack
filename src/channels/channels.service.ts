@@ -2,13 +2,13 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Channel } from 'diagnostics_channel';
 import { NotFoundError } from 'rxjs';
-import { ChannelChats } from 'src/entities/ChannelChats.entity';
-import { ChannelMembers } from 'src/entities/ChannelMembers.entity';
-import { Channels } from 'src/entities/Channels.entity';
-import { Users } from 'src/entities/Users.entity';
-import { WorkspaceMembers } from 'src/entities/WorkspaceMembers.entity';
-import { Workspaces } from 'src/entities/Workspaces.entity';
-import { EventGateway } from 'src/event/event.gateway';
+import { ChannelChats } from '../../src/entities/ChannelChats.entity';
+import { ChannelMembers } from '../../src/entities/ChannelMembers.entity';
+import { Channels } from '../../src/entities/Channels.entity';
+import { Users } from '../../src/entities/Users.entity';
+import { WorkspaceMembers } from '../../src/entities/WorkspaceMembers.entity';
+import { Workspaces } from '../../src/entities/Workspaces.entity';
+import { EventGateway } from '../../src/event/event.gateway';
 import { MoreThan, Not, Repository } from 'typeorm';
 
 @Injectable()

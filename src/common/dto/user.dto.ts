@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { JoinRequestDto } from 'src/users/dto/join.reqeust.dto';
+import { JoinRequestDto } from '../../../src/users/dto/join.reqeust.dto';
 
 export class UserDto extends JoinRequestDto {
   @ApiProperty({ required: true, example: 1, description: '아이디' })

@@ -10,10 +10,10 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { LoggedInGuard } from 'src/Auth/logged-in.guard';
-import { User } from 'src/common/decorators/user.decorator';
-import { UserDto } from 'src/common/dto/user.dto';
-import { UndefinedToNullInterceptor } from 'src/common/interceptors/undefinedToNull.interceptor';
+import { LoggedInGuard } from '../../src/Auth/logged-in.guard';
+import { User } from '../../src/common/decorators/user.decorator';
+import { UserDto } from '../../src/common/dto/user.dto';
+import { UndefinedToNullInterceptor } from '../../src/common/interceptors/undefinedToNull.interceptor';
 import { JoinRequestDto } from './dto/join.reqeust.dto';
 import { UsersService } from './users.service';
 

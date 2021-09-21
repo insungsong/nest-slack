@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Channel } from 'diagnostics_channel';
-import { ChannelMembers } from 'src/entities/ChannelMembers.entity';
-import { Channels } from 'src/entities/Channels.entity';
-import { Users } from 'src/entities/Users.entity';
-import { WorkspaceMembers } from 'src/entities/WorkspaceMembers.entity';
-import { Workspaces } from 'src/entities/Workspaces.entity';
+import { ChannelMembers } from '../../src/entities/ChannelMembers.entity';
+import { Channels } from '../../src/entities/Channels.entity';
+import { Users } from '../../src/entities/Users.entity';
+import { WorkspaceMembers } from '../../src/entities/WorkspaceMembers.entity';
+import { Workspaces } from '../../src/entities/Workspaces.entity';
 import { getConnection, Repository } from 'typeorm';
 
 @Injectable()
